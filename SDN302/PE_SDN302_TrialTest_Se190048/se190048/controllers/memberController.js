@@ -27,3 +27,39 @@ exports.login = async (req, res) => {
     res.status(500).json({ messeage: error.messeage });
   }
 };
+
+exports.showSigninPage = async (req, res) => {
+  try {
+    res.render("signin", {
+      message: req.session.message,
+      username: req.session.username,
+    });
+  } catch (error) {
+    res.status(500).json({ messeage: error.messeage });
+  }
+};
+exports.signin = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await Members.findOne({ username });
+
+    if (!user) {
+      req.session.message = "Invalid username or password";
+      return res.redirect("/auth/signin");
+    }
+    const match = await bcrypt.compare(password, user.password);
+
+    if (match) {
+      req.session.username = username;
+      req.session.message = null;
+      return res.redirect("/view/sections");
+    } else {
+      req.session.message = "Invalid username or password";
+      return res.redirect("/auth/signin");
+    }
+  } catch (error) {
+    console.error("Login Error:", error);
+    req.session.message = "An error occurred during login. Please try again.";
+    return res.redirect("/auth/signin");
+  }
+};
