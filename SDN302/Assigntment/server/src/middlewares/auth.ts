@@ -2,8 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { Member } from "../modules/member/models/member.model";
 import { IMember } from "../types/member.type";
+import config from "../config/config";
 
-const JWT_SECRET = process.env.JWT_SECRET || "";
+const JWT_SECRET = config.JWT_SECRET;
 
 export const authMiddleware = async (
   req: Request,
@@ -16,13 +17,16 @@ export const authMiddleware = async (
 
     const decoded = jwt.verify(token, JWT_SECRET) as { memberId: string };
     const account = await Member.findById(decoded.memberId);
-    if (!account) return res.status(401).json({ message: "user not found" });
+
+    if (!account) return res.status(401).json({ message: "User not found" });
+
     req.member = account;
     next();
   } catch (err: any) {
-    res.status(401).json({ message: "Invalid Token" });
+    res.status(401).json({ message: "Invalid token" });
   }
 };
+
 export const checkAdminMiddleWare = async (
   req: Request,
   res: Response,
@@ -31,11 +35,13 @@ export const checkAdminMiddleWare = async (
   if (!req.member) {
     return res.status(401).json({ message: "Unauthorized" });
   }
+
   if (!req.member.isAdmin) {
     return res.status(403).json({
       message: "Forbidden: Admin privileges required",
     });
   }
+
   next();
 };
 export const requireAdmin = [authMiddleware, checkAdminMiddleWare];

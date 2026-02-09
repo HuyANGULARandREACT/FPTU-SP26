@@ -5,7 +5,7 @@ export const getAllPerfume = async (req: Request, res: Response) => {
     const perfumes = await perfumeService.getAllPerfumes();
     res.status(200).json(perfumes);
   } catch (err) {
-    res.status(500).json({ message: "Error featching perfumes", err });
+    res.status(500).json({ message: "Error fetching perfumes", err });
   }
 };
 export const getPerfumeById = async (req: Request, res: Response) => {
@@ -14,7 +14,7 @@ export const getPerfumeById = async (req: Request, res: Response) => {
     const perfume = await perfumeService.getPerfumeById(id as string);
     res.status(200).json(perfume);
   } catch (err) {
-    res.status(500).json({ message: "error featching perfume", err });
+    res.status(500).json({ message: "Error fetching perfume", err });
   }
 };
 export const createPerfume = async (req: Request, res: Response) => {
@@ -22,7 +22,7 @@ export const createPerfume = async (req: Request, res: Response) => {
     const perfume = await perfumeService.createPerfume(req.body);
     res.status(201).json(perfume);
   } catch (err) {
-    res.status(500).json({ message: "error creating perfume" });
+    res.status(500).json({ message: "Error creating perfume" });
   }
 };
 export const updatePerfume = async (req: Request, res: Response) => {
@@ -32,9 +32,9 @@ export const updatePerfume = async (req: Request, res: Response) => {
     if (!perfume) {
       return res.status(404).json({ message: "Perfume not found" });
     }
-    res.status(200).json({ message: "perfume update success", perfume });
+    res.status(200).json({ message: "Perfume updated successfully", perfume });
   } catch (err) {
-    res.status(500).json({ message: " erorr updateing perfume" });
+    res.status(500).json({ message: "Error updating perfume" });
   }
 };
 export const deletePerfume = async (req: Request, res: Response) => {
@@ -42,10 +42,10 @@ export const deletePerfume = async (req: Request, res: Response) => {
     const { id } = req.params;
     const perfume = await perfumeService.deletePerfume(id as string);
     if (!perfume) {
-      return res.status(404).json("perfume not found");
+      return res.status(404).json({ message: "Perfume not found" });
     }
-    res.status(200).json({ message: "perfume delete successfully", perfume });
+    res.status(200).json({ message: "Perfume deleted successfully", perfume });
   } catch (err) {
-    res.status(500).json({ message: "error delete perfume" });
+    res.status(500).json({ message: "Error deleting perfume" });
   }
 };

@@ -19,11 +19,10 @@ export const registerMember = async (
 
     await member.save();
     res.status(201).json({
-      message: "register succesfully",
+      message: "Register successfully",
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "server error at register", err });
+    res.status(500).json({ message: "Server error at register", err });
   }
 };
 export const loginMember = async (
@@ -34,20 +33,19 @@ export const loginMember = async (
   try {
     const member = await Member.findOne({ email });
     if (!member) {
-      return res.status(400).json({ message: "email doenst exist" });
+      return res.status(400).json({ message: "Email doesn't exist" });
     }
     const isMatch = await bcrypt.compare(password, member.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "invalid password" });
+      return res.status(400).json({ message: "Invalid password" });
     }
     const token = generateToken(member);
     res.status(200).json({
-      message: "login success",
+      message: "Login successful",
       success: true,
       token,
     });
   } catch (err: any) {
-    console.error(err);
     res.status(500).send("Error at login");
   }
 };
@@ -57,7 +55,7 @@ export const getAllMembers = async (req: Request, res: Response) => {
     const members = await memberService.getAllMembers();
     res.status(200).json(members);
   } catch (err) {
-    res.status(500).json({ message: "Error featching members", err });
+    res.status(500).json({ message: "Error fetching members", err });
   }
 };
 
@@ -67,7 +65,7 @@ export const getMemberById = async (req: Request, res: Response) => {
     const member = await memberService.getMemberById(id as string);
     res.status(200).json(member);
   } catch (err) {
-    res.status(500).json({ message: "error fetching member " });
+    res.status(500).json({ message: "Error fetching member" });
   }
 };
 export const updateMember = async (req: Request, res: Response) => {
@@ -75,11 +73,11 @@ export const updateMember = async (req: Request, res: Response) => {
     const { id } = req.params;
     const member = await memberService.updateMember(id as string, req.body);
     if (!member) {
-      return res.status(404).json({ message: "member not found" });
+      return res.status(404).json({ message: "Member not found" });
     }
-    res.status(200).json({ message: "member update success", member });
+    res.status(200).json({ message: "Member updated successfully", member });
   } catch (err) {
-    res.status(500).json({ message: "error updating member" });
+    res.status(500).json({ message: "Error updating member" });
   }
 };
 export const deleteMember = async (req: Request, res: Response) => {
@@ -87,10 +85,10 @@ export const deleteMember = async (req: Request, res: Response) => {
     const { id } = req.params;
     const member = await memberService.deletePerfume(id as string);
     if (!member) {
-      return res.status(404).json({ message: "member not found" });
+      return res.status(404).json({ message: "Member not found" });
     }
-    res.status(200).json({ message: "member delete success", member });
+    res.status(200).json({ message: "Member deleted successfully", member });
   } catch (err) {
-    res.status(500).json({ message: "member not found" });
+    res.status(500).json({ message: "Error deleting member" });
   }
 };

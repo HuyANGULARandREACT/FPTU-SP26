@@ -1,5 +1,5 @@
 import express from "express";
-import { authMiddleware as auth } from "../../../middlewares/auth";
+import { requireAdmin } from "../../../middlewares/auth";
 import {
   createPerfume,
   deletePerfume,
@@ -12,7 +12,7 @@ const perfumeRouter = express.Router();
 
 perfumeRouter.get("/", getAllPerfume);
 perfumeRouter.get("/:id", getPerfumeById);
-perfumeRouter.post("/", createPerfume);
-perfumeRouter.put("/:id", updatePerfume);
-perfumeRouter.delete("/:id", deletePerfume);
+perfumeRouter.post("/", requireAdmin, createPerfume);
+perfumeRouter.put("/:id", requireAdmin, updatePerfume);
+perfumeRouter.delete("/:id", requireAdmin, deletePerfume);
 export default perfumeRouter;
