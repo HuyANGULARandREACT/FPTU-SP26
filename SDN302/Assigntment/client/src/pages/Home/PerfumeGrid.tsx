@@ -1,5 +1,6 @@
 import React from "react";
-import type { IPerfume } from "../types/type";
+import type { IPerfume } from "../../types/type";
+import { useNavigate } from "react-router";
 
 interface PerfumeGridProps {
   perfumes: IPerfume[];
@@ -12,6 +13,10 @@ const PerfumeGrid: React.FC<PerfumeGridProps> = ({
   loading,
   error,
 }) => {
+  const navigate = useNavigate();
+  const handlePerfumeClick = (perfumeId: string | undefined) => {
+    navigate(`/perfume/${perfumeId}`);
+  };
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12">
       {loading ? (
@@ -22,7 +27,14 @@ const PerfumeGrid: React.FC<PerfumeGridProps> = ({
         <span className="text-sm text-slate-500">No perfumes available</span>
       ) : (
         perfumes.map((perfume) => (
-          <div key={perfume.uri} className="group cursor-pointer">
+          <div
+            key={perfume.uri}
+            className="group cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePerfumeClick(perfume._id);
+            }}
+          >
             <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 mb-4">
               <img
                 alt={perfume.perfumeName}

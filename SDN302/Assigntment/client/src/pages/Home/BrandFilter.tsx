@@ -1,5 +1,5 @@
 import React from "react";
-import type { IBrand } from "../types/type";
+import type { IBrand } from "../../types/type";
 
 interface BrandFilterProps {
   brands: IBrand[];

@@ -10,6 +10,7 @@ export interface IMember {
   updatedAt?: Date;
 }
 export interface IPerfume {
+  _id?: string;
   perfumeName: string;
   uri: string;
   price: number;
@@ -24,7 +25,6 @@ export interface IPerfume {
   updatedAt?: Date;
 }
 export interface IBrand {
-  id?: string;
   _id?: string;
   brandName: string;
   createdAt?: Date;

@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router";
 import MainLayout from "../components/layout/MainLayout";
 import Home from "../pages/Home/home";
+import PerfumeDetail from "../pages/PerfumeDetail";
 
 const AppRoute = () => {
   return (
@@ -12,6 +13,7 @@ const AppRoute = () => {
       </Route>
       <Route element={<MainLayout />}>
         <Route index element={<Home />} />
+        <Route path="/perfume/:id" element={<PerfumeDetail/>}/>
       </Route>
     </Routes>
   );

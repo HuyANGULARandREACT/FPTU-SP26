@@ -15,4 +15,17 @@ export const perfumeAPI = {
       throw error;
     }
   },
+  getPerfumeById: async (id: string): Promise<IPerfume> => {
+    try {
+      const response = await fetch(`${VITE_BASE_URL}/perfume/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch perfume details");
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.log("Error fetching perfume details", error);
+      throw error;
+    }
+  },
 };
