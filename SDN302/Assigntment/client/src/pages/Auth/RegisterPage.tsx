@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/useAuth";
 import { FcGoogle } from "react-icons/fc";
 import { GrApple } from "react-icons/gr";
 // Validation Schema

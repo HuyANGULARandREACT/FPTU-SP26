@@ -1,3 +1,10 @@
+import type {
+  IAuthResponse,
+  ILoginRequest,
+  IRegisterRequest,
+  AuthUser,
+} from "../types/type";
+
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 // Helper function to decode JWT token
@@ -18,29 +25,6 @@ const decodeJWT = (token: string) => {
   }
 };
 
-export interface ILoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface IRegisterRequest {
-  membername: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  YOB: Date;
-  gender: boolean;
-}
-
-export interface IAuthResponse {
-  token: string;
-  user: {
-    id: string;
-
-    membername: string;
-  };
-}
-
 export const authAPI = {
   login: async (data: ILoginRequest): Promise<IAuthResponse> => {
     try {
@@ -53,7 +37,7 @@ export const authAPI = {
         throw new Error("Login failed");
       }
       const result = await response.json();
-      console.log("Login response:", result);
+      // console.log("Login response:", result);
 
       // Store token in localStorage
       if (result.token) {
@@ -64,9 +48,9 @@ export const authAPI = {
         console.log("Decoded token:", decoded);
 
         if (decoded) {
-          const userData = {
-            id: decoded.memberId || decoded.id || decoded._id || "",
-
+          const userData: AuthUser = {
+            _id: decoded.memberId || decoded.id || decoded._id || "",
+            email: decoded.email || "",
             membername: decoded.membername || decoded.name || "",
           };
           localStorage.setItem("user", JSON.stringify(userData));
@@ -108,8 +92,8 @@ export const authAPI = {
         console.log("Decoded token:", decoded);
 
         if (decoded) {
-          const userData = {
-            id: decoded.memberId || decoded.id || decoded._id || "",
+          const userData: AuthUser = {
+            _id: decoded.memberId || decoded.id || decoded._id || "",
             email: decoded.email || "",
             membername: decoded.membername || decoded.name || "",
           };

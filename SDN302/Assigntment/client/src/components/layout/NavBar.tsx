@@ -20,7 +20,7 @@ import {
 import { User, LogOut, UserCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { Button } from "../ui/button";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/useAuth";
 const menuItems: {
   title: string;
   components: { title: string; href: string; description: string }[];
@@ -184,7 +184,7 @@ export const Navbar = () => {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link to="/user/profile" className="cursor-pointer">
+                  <Link to="/member/profile/:id" className="cursor-pointer">
                     <UserCircle className="mr-2 h-4 w-4" />
                     <span>User Detail</span>
                   </Link>

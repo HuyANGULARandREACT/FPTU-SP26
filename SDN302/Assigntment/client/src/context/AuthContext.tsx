@@ -1,29 +1,22 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import React, { createContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { authAPI } from "../services/authAPI";
-import type { IAuthResponse, IRegisterRequest } from "../services/authAPI";
+import type {
+  AuthContextType,
+  IAuthResponse,
+  IRegisterRequest,
+  AuthUser,
+} from "../types/type";
 
-interface User {
-  id: string;
-  email?: string;
-  membername: string;
-}
-
-interface AuthContextType {
-  user: User | null;
-  isLoggedIn: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (data: IRegisterRequest) => Promise<void>;
-  logout: () => void;
-  checkAuth: () => boolean;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined,
+);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const checkAuth = (): boolean => {
@@ -92,12 +85,4 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
-
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 };

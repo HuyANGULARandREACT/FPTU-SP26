@@ -4,7 +4,11 @@ import { IMember } from "../types/member.type";
 
 const generateToken = (member: IMember) => {
   return jwt.sign(
-    { memberId: member._id, membername: member.membername },
+    {
+      memberId: member._id,
+      membername: member.membername,
+      isAdmin: member.isAdmin,
+    },
     config.JWT_SECRET,
     {
       expiresIn: "1h",

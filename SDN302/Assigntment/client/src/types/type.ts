@@ -9,6 +9,37 @@ export interface IMember {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+// Auth-specific user type (lightweight version for authentication)
+export type AuthUser = Pick<IMember, "_id" | "membername" | "email">;
+
+export interface ILoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface IRegisterRequest {
+  membername: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  YOB: Date;
+  gender: boolean;
+}
+
+export interface IAuthResponse {
+  token: string;
+  user: AuthUser;
+}
+
+export interface AuthContextType {
+  user: AuthUser | null;
+  isLoggedIn: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  register: (data: IRegisterRequest) => Promise<void>;
+  logout: () => void;
+  checkAuth: () => boolean;
+}
 export interface IPerfume {
   _id?: string;
   perfumeName: string;
