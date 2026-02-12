@@ -18,8 +18,6 @@ const Home = () => {
       try {
         setLoading(true);
         const data = await brandApi.getAllBrands();
-        console.log(data);
-
         setBrands(data);
         setError("");
       } catch (err) {
@@ -33,7 +31,6 @@ const Home = () => {
       try {
         setLoading(true);
         const data = await perfumeAPI.getAllPerfumes();
-        console.log(data);
         setPerfumes(data);
       } catch (err) {
         setError("Failed to load perfume ");

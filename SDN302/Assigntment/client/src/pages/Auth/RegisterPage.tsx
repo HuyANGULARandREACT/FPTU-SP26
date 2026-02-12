@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { authAPI } from "../../services/authAPI";
+import { useAuth } from "../../context/AuthContext";
 import { FcGoogle } from "react-icons/fc";
 import { GrApple } from "react-icons/gr";
 // Validation Schema
@@ -24,6 +24,7 @@ const registerValidationSchema = Yup.object({
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -43,7 +44,7 @@ const RegisterPage = () => {
       setSubmitError("");
       try {
         setLoading(true);
-        await authAPI.register(values);
+        await register(values);
         navigate("/");
       } catch (err) {
         setSubmitError(

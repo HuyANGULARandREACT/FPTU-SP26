@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -9,9 +9,18 @@ import {
 } from "../ui/navigation-menu";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { User } from "lucide-react";
-import { Link } from "react-router";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { User, LogOut, UserCircle } from "lucide-react";
+import { Link, useNavigate } from "react-router";
 import { Button } from "../ui/button";
+import { useAuth } from "../../context/AuthContext";
 const menuItems: {
   title: string;
   components: { title: string; href: string; description: string }[];
@@ -102,10 +111,14 @@ const menuItems: {
   },
 ];
 export const Navbar = () => {
-  // Simulate authentication state - replace with actual auth logic
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userName] = useState("huy");
-  console.log(setIsAuthenticated);
+  const { user, isLoggedIn, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/auth/login");
+  };
+
   return (
     <div className="w-full border-b bg-white">
       <div className="flex items-center justify-between px-4 py-3">
@@ -144,22 +157,48 @@ export const Navbar = () => {
         </NavigationMenu>
 
         <div className="flex items-center gap-2">
-          {isAuthenticated ? (
-            // Logged in - Show username with avatar
-            <Link to="/user/profile">
-              <Button
-                variant="ghost"
-                className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-15 px-4 py-2"
-              >
-                <span className="font-medium">{userName}</span>
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback className="bg-gray-300 text-gray-700">
-                    {userName.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
-            </Link>
+          {isLoggedIn && user ? (
+            // Logged in - Show username with dropdown menu
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-15 px-4 py-2"
+                >
+                  <span className="font-medium">{user.membername}</span>
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback className="bg-gray-300 text-gray-700">
+                      {user.membername.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {user.membername}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/user/profile" className="cursor-pointer">
+                    <UserCircle className="mr-2 h-4 w-4" />
+                    <span>User Detail</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="cursor-pointer text-red-600 focus:text-red-600"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Logout</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             // Not logged in - Show login button
             <Link to="/auth/login">
