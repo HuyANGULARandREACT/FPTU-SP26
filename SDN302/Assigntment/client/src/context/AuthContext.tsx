@@ -61,7 +61,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       const response: IAuthResponse = await authAPI.register(data);
       setUser(response.user);
       setIsLoggedIn(true);
-      localStorage.setItem("user", JSON.stringify(response.user));
     } catch (error) {
       console.error("Registration failed:", error);
       throw error;

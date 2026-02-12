@@ -39,11 +39,9 @@ export const authAPI = {
       const result = await response.json();
       // console.log("Login response:", result);
 
-      // Store token in localStorage
       if (result.token) {
         localStorage.setItem("authToken", result.token);
 
-        // Decode JWT to get user info
         const decoded = decodeJWT(result.token);
         console.log("Decoded token:", decoded);
 
@@ -81,33 +79,7 @@ export const authAPI = {
       if (!response.ok) {
         throw new Error("Registration failed");
       }
-      const result = await response.json();
-
-      // Store token in localStorage
-      if (result.token) {
-        localStorage.setItem("authToken", result.token);
-
-        // Decode JWT to get user info
-        const decoded = decodeJWT(result.token);
-        console.log("Decoded token:", decoded);
-
-        if (decoded) {
-          const userData: AuthUser = {
-            _id: decoded.memberId || decoded.id || decoded._id || "",
-            email: decoded.email || "",
-            membername: decoded.membername || decoded.name || "",
-          };
-          localStorage.setItem("user", JSON.stringify(userData));
-
-          // Return properly formatted response
-          return {
-            token: result.token,
-            user: userData,
-          };
-        }
-      }
-
-      throw new Error("Invalid response from server");
+      return await response.json();
     } catch (error) {
       console.error("Error during registration:", error);
       throw error;

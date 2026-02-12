@@ -20,7 +20,7 @@ import {
 import { User, LogOut, UserCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { Button } from "../ui/button";
-import { useAuth } from "../../context/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 const menuItems: {
   title: string;
   components: { title: string; href: string; description: string }[];
