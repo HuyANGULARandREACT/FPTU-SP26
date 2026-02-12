@@ -92,3 +92,26 @@ export const deleteMember = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error deleting member" });
   }
 };
+export const handleChangePassword = async (
+  req: Request,
+  res: Response,
+): Promise<any> => {
+  const { email, oldPassword, newPassword } = req.body;
+  try {
+    const member = await Member.findOne({ email });
+    if (!member) {
+      return res.status(404).json({ message: "member doesnot exist" });
+    }
+    const isMatch = await bcrypt.compare(oldPassword, member.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "password is not match" });
+    }
+    const salt = await bcrypt.genSalt(10);
+    member.password = await bcrypt.hash(newPassword, salt);
+    await member.save();
+    res.json({ message: "Đổi mật khẩu thành công" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+};

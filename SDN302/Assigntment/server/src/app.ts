@@ -4,6 +4,7 @@ import perfumeRouter from "./modules/perfume/routes/perfume.route";
 import memberRouter from "./modules/member/routes/member.routes";
 import brandRouter from "./modules/brands/routes/brand.routes";
 import connectDB from "./config/db";
+import config from "./config/config";
 
 const app = express();
 const apiRouter = express.Router();
@@ -21,7 +22,7 @@ apiRouter.use("/member", memberRouter);
 apiRouter.use("/brand", brandRouter);
 app.use("/api/v1", apiRouter);
 
-const PORT = process.env.PORT;
+const PORT = config.PORT;
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
