@@ -7,6 +7,7 @@ const generateToken = (member: IMember) => {
     {
       memberId: member._id,
       membername: member.membername,
+      email: member.email,
       isAdmin: member.isAdmin,
     },
     config.JWT_SECRET,

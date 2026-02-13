@@ -73,7 +73,7 @@ export const updateMember = async (req: Request, res: Response) => {
     const { id } = req.params;
     const member = await memberService.updateMember(id as string, req.body);
     if (!member) {
-      return res.status(404).json({ message: "Member not found" });
+      return res.status(404).json({ message: "Member not founds" });
     }
     res.status(200).json({ message: "Member updated successfully", member });
   } catch (err) {
@@ -96,11 +96,11 @@ export const handleChangePassword = async (
   req: Request,
   res: Response,
 ): Promise<any> => {
-  const { email, oldPassword, newPassword } = req.body;
+  const { id, oldPassword, newPassword } = req.body;
   try {
-    const member = await Member.findOne({ email });
+    const member = await Member.findById({ _id: id });
     if (!member) {
-      return res.status(404).json({ message: "member doesnot exist" });
+      return res.status(404).json({ message: "member doesnot exists" });
     }
     const isMatch = await bcrypt.compare(oldPassword, member.password);
     if (!isMatch) {
