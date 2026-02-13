@@ -184,7 +184,7 @@ export const Navbar = () => {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link to="/member/profile/:id" className="cursor-pointer">
+                  <Link to="/member/profile" className="cursor-pointer">
                     <UserCircle className="mr-2 h-4 w-4" />
                     <span>User Detail</span>
                   </Link>

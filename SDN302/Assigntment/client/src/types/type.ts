@@ -11,7 +11,10 @@ export interface IMember {
 }
 
 // Auth-specific user type (lightweight version for authentication)
-export type AuthUser = Pick<IMember, "_id" | "membername" | "email">;
+export type AuthUser = Pick<
+  IMember,
+  "_id" | "membername" | "email" | "isAdmin"
+>;
 
 export interface ILoginRequest {
   email: string;
@@ -25,6 +28,19 @@ export interface IRegisterRequest {
   confirmPassword: string;
   YOB: Date;
   gender: boolean;
+}
+
+export interface IUpdateMemberRequest {
+  membername: string;
+  YOB: Date;
+  gender: boolean;
+}
+
+export interface IChangePasswordRequest {
+  id: string;
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }
 
 export interface IAuthResponse {
