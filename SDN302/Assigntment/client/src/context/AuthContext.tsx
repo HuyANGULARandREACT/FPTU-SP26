@@ -58,9 +58,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const register = async (data: IRegisterRequest): Promise<void> => {
     try {
-      const response: IAuthResponse = await authAPI.register(data);
-      setUser(response.user);
-      setIsLoggedIn(true);
+      await authAPI.register(data);
+      // Registration successful - user needs to login separately
+      // Don't auto-login after registration
     } catch (error) {
       console.error("Registration failed:", error);
       throw error;

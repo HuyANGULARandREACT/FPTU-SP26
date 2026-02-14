@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link, useLocation } from "react-router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAuth } from "../../hooks/useAuth";
@@ -18,10 +18,21 @@ const loginValidationSchema = Yup.object({
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  // Check for success message from registration
+  useEffect(() => {
+    if (location.state?.message) {
+      setSuccessMessage(location.state.message);
+      // Clear the message from location state
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   const formik = useFormik({
     initialValues: {
@@ -120,6 +131,13 @@ const LoginPage = () => {
               Enter your credentials to access your scent profile.
             </p>
           </div>
+
+          {/* Success Message */}
+          {successMessage && (
+            <div className="mb-6 p-4 bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 text-green-700 dark:text-green-400 rounded-lg text-sm">
+              {successMessage}
+            </div>
+          )}
 
           {/* Error Message */}
           {submitError && (

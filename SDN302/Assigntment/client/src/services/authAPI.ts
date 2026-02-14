@@ -70,28 +70,15 @@ export const authAPI = {
     return { token, user };
   },
 
-  register: async (data: IRegisterRequest): Promise<IAuthResponse> => {
+  register: async (
+    data: IRegisterRequest,
+  ): Promise<{ success: boolean; message: string }> => {
     const response = await apiClient.post<{
-      token: string;
       success: boolean;
       message: string;
     }>("/member/register", data);
 
-    const { token } = response.data;
-
-    if (!token) {
-      throw new Error("No token received from server");
-    }
-
-    const user = decodeJWT(token);
-
-    if (!user) {
-      throw new Error("Invalid token received");
-    }
-
-    storeAuthData(token, user);
-
-    return { token, user };
+    return response.data;
   },
 
   isLoggedIn: (): boolean => {

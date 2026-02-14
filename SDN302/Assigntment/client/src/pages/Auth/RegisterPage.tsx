@@ -45,7 +45,10 @@ const RegisterPage = () => {
       try {
         setLoading(true);
         await register(values);
-        navigate("/");
+        // Registration successful - redirect to login page
+        navigate("/auth/login", {
+          state: { message: "Registration successful! Please login." },
+        });
       } catch (err) {
         setSubmitError(
           err instanceof Error
