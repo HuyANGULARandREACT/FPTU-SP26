@@ -24,7 +24,7 @@ const menuItemsForMember: MenuItem[] = [
 
 const menuItemsForAdmin: MenuItem[] = [
   { label: "User Detail", to: "/member/profile", icon: UserCircle },
-  { label: "Management", to: "/admin/management", icon: Users },
+  { label: "Management", to: "/admin/manage", icon: Users },
 ];
 
 export const UserMenu = () => {

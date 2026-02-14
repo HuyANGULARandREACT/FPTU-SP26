@@ -11,7 +11,7 @@ interface BrandFilterProps {
 
 // Helper function to get brand ID (handles both id and _id)
 const getBrandId = (brand: IBrand): string | undefined => {
-  return brand.id || brand._id;
+  return brand._id;
 };
 
 const BrandFilter: React.FC<BrandFilterProps> = ({
@@ -50,12 +50,6 @@ const BrandFilter: React.FC<BrandFilterProps> = ({
             <button
               key={brandId || brand.brandName}
               onClick={() => {
-                console.log(
-                  "Clicked brand:",
-                  brand.brandName,
-                  "with ID:",
-                  brandId,
-                );
                 onBrandSelect(brandId || null);
               }}
               className={`whitespace-nowrap px-6 py-2 rounded-full border font-medium text-sm transition-all ${

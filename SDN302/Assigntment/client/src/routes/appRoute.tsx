@@ -9,6 +9,10 @@ import LoginPage from "../pages/Auth/LoginPage";
 import MemberDetail from "../pages/Detail/MemberDetail/MemberDetail";
 import EditInfo from "../pages/Detail/MemberDetail/EditInfo";
 import ChangePassword from "../pages/Detail/MemberDetail/ChangePassword";
+import AdminLayout from "../pages/Admin/AdminLayout";
+import AdminManage from "../pages/Admin/AdminManage";
+import AdminManagePerfumes from "../pages/Admin/AdminManagePerfumes";
+import AdminManageBrands from "../pages/Admin/AdminManageBrands";
 
 const AppRoute = () => {
   return (
@@ -37,6 +41,11 @@ const AppRoute = () => {
         />
         <Route path="EditInfomation" element={<EditInfo />} />
         <Route path="changePassword" element={<ChangePassword />} />
+      </Route>
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route path="manage" element={<AdminManage />} />
+        <Route path="manage-brands" element={<AdminManageBrands />} />
+        <Route path="manage-perfumes" element={<AdminManagePerfumes />} />
       </Route>
     </Routes>
   );
