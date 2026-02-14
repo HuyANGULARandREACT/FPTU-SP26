@@ -5,6 +5,7 @@ import {
   deletePerfume,
   getAllPerfume,
   getPerfumeById,
+  getPerfumesWithPagination,
   updatePerfume,
 } from "../controllers/perfume.controller";
 import { getBrandsWithPagination } from "../../brands/controllers/brand.controller";
@@ -16,5 +17,5 @@ perfumeRouter.get("/:id", getPerfumeById);
 perfumeRouter.post("/", requireAdmin, createPerfume);
 perfumeRouter.put("/:id", requireAdmin, updatePerfume);
 perfumeRouter.delete("/:id", requireAdmin, deletePerfume);
-perfumeRouter.get("/perfumes/withPagination", getBrandsWithPagination);
+perfumeRouter.get("/perfumes/withPagination", getPerfumesWithPagination);
 export default perfumeRouter;
