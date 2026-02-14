@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import * as perfumeService from "../services/perfume.service";
+import { PaginatedResponse } from "../../../types/pagination.type";
+import { IPerfume } from "../../../types/perfume.type";
 export const getAllPerfume = async (req: Request, res: Response) => {
   try {
     const perfumes = await perfumeService.getAllPerfumes();
@@ -47,5 +49,39 @@ export const deletePerfume = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Perfume deleted successfully", perfume });
   } catch (err) {
     res.status(500).json({ message: "Error deleting perfume" });
+  }
+};
+export const getPerfumesWithPagination = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+    const pageSize = parseInt(req.query.pageSize as string) || 5;
+    const perfumesData = await perfumeService.getAllPerfumes();
+    if (page < 1 || pageSize < 1) {
+      return res.status(400).json({
+        message: "Page and pageSize muse > 0",
+      });
+    }
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    const paginatedData = perfumesData.slice(startIndex, endIndex);
+    const total = perfumesData.length;
+    const totalPages = Math.ceil(total / pageSize);
+
+    const response: PaginatedResponse<IPerfume> = {
+      data: paginatedData,
+      pagination: {
+        page,
+        pageSize,
+        total,
+        totalPages,
+      },
+    };
+    return res.status(200).json(response);
+  } catch (err) {
+    return res.status(500).json({ message: "Internal server error", err });
   }
 };

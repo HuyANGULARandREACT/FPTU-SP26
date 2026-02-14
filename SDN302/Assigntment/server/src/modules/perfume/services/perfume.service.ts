@@ -31,3 +31,4 @@ export const deletePerfume = async (id: string): Promise<IPerfume | null> => {
   if (!mongoose.Types.ObjectId.isValid(id)) return null;
   return await Perfume.findByIdAndDelete(id).exec();
 };
+
