@@ -7,10 +7,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { LogOut, UserCircle } from "lucide-react";
+import { LogOut, UserCircle, Users } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { Button } from "../../ui/button";
 import { useAuth } from "../../../hooks/useAuth";
+
+interface MenuItem {
+  label: string;
+  to: string;
+  icon: React.ElementType;
+}
+
+const menuItemsForMember: MenuItem[] = [
+  { label: "User Detail", to: "/member/profile", icon: UserCircle },
+];
+
+const menuItemsForAdmin: MenuItem[] = [
+  { label: "User Detail", to: "/member/profile", icon: UserCircle },
+  { label: "Management", to: "/admin/management", icon: Users },
+];
 
 export const UserMenu = () => {
   const { user, logout } = useAuth();
@@ -22,6 +37,9 @@ export const UserMenu = () => {
   };
 
   if (!user) return null;
+
+  // Select menu items based on user role
+  const menuItems = user.isAdmin ? menuItemsForAdmin : menuItemsForMember;
 
   return (
     <DropdownMenu>
@@ -48,12 +66,17 @@ export const UserMenu = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link to="/member/profile" className="cursor-pointer">
-            <UserCircle className="mr-2 h-4 w-4" />
-            <span>User Detail</span>
-          </Link>
-        </DropdownMenuItem>
+        {menuItems.map((item) => {
+          const IconComponent = item.icon;
+          return (
+            <DropdownMenuItem key={item.to} asChild>
+              <Link to={item.to} className="cursor-pointer">
+                <IconComponent className="mr-2 h-4 w-4" />
+                <span>{item.label}</span>
+              </Link>
+            </DropdownMenuItem>
+          );
+        })}
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={handleLogout}

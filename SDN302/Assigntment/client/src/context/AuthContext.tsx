@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     checkAuth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
   const login = async (email: string, password: string): Promise<void> => {
     try {
       const response: IAuthResponse = await authAPI.login({ email, password });
@@ -73,7 +73,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     localStorage.removeItem("authToken");
     localStorage.removeItem("user");
   };
-
+  
   const value: AuthContextType = {
     user,
     isLoggedIn,
@@ -81,6 +81,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     register,
     logout,
     checkAuth,
+   
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
