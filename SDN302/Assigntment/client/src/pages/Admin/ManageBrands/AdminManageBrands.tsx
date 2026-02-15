@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "../../../components/ui/card";
 import { Button } from "../../../components/ui/button";
-import {  Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import type { IBrand } from "../../../services";
 import { brandAPI, type PaginatedResponse } from "../../../services/brandAPI";
 import CreateBrandDialog from "./createBrandDialog";
@@ -43,7 +43,7 @@ const AdminManageBrands = () => {
       await fetchBrands(currentPage);
     } catch (err) {
       console.error("Failed to create brand:", err);
-      throw error; // Để dialog xử lý error
+      throw error;
     }
   };
   const handlePageChange = (newPage: number) => {
@@ -51,7 +51,19 @@ const AdminManageBrands = () => {
       setCurrentPage(newPage);
     }
   };
-
+  const handleDelete = async (id: string, brandName: string) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${brandName}"? This action cannot be undone.`,
+    );
+    if (!confirmed) return;
+    try {
+      await brandAPI.deleteBrand(id);
+      await fetchBrands(currentPage);
+    } catch (err) {
+      console.error("Failed to delete perfume:", err);
+      alert("Failed to delete perfume. Please try again.");
+    }
+  };
   return (
     <div className="p-8 max-w-7xl mx-auto">
       {/* Header */}
@@ -129,6 +141,10 @@ const AdminManageBrands = () => {
                                 variant="ghost"
                                 size="sm"
                                 className="hover:bg-blue-50 hover:text-blue-600"
+                                onClick={() =>
+                                  brand._id &&
+                                  handleDelete(brand._id, brand.brandName)
+                                }
                               >
                                 <Edit className="h-4 w-4" />
                               </Button>

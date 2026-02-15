@@ -1,7 +1,17 @@
 import apiClient from "../lib/axios";
 import type { IPerfume } from "../types/type";
 import type { PaginatedResponse } from "./brandAPI";
-
+interface createPerfumeDTO {
+  perfumeName: string;
+  uri: string;
+  price: number;
+  concentration: string;
+  description: string;
+  ingredients: string;
+  volume: number;
+  targetAudience: string;
+  brand: string;
+}
 export const perfumeAPI = {
   /**
    * Get all perfumes
@@ -29,5 +39,12 @@ export const perfumeAPI = {
       },
     );
     return response.data;
+  },
+  createPerfume: async (data: createPerfumeDTO): Promise<IPerfume> => {
+    const response = await apiClient.post("/perfume", data);
+    return response.data;
+  },
+  deletePerfume: async (id: string): Promise<void> => {
+    await apiClient.delete(`/perfume/${id}`);
   },
 };

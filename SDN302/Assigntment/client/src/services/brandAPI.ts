@@ -37,4 +37,7 @@ export const brandAPI = {
     const response = await apiClient.post("/brand", data);
     return response.data;
   },
+  deleteBrand: async (id: string): Promise<void> => {
+    await apiClient.delete(`/brand/${id}`);
+  },
 };

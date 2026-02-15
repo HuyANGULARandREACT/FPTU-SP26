@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "../../../components/ui/card";
-import { Edit, Plus, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { perfumeAPI, type IPerfume } from "../../../services";
 import type { PaginatedResponse } from "../../../services/brandAPI";
-
+import CreatePerfumeDialog from "./CreatePerfumeDialog";
+interface CreatePerfumeFormData {
+  perfumeName: string;
+  uri: string;
+  price: number;
+  concentration: string;
+  description: string;
+  ingredients: string;
+  volume: number;
+  targetAudience: string;
+  brand: string;
+}
 const AdminManagePerfumes = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,10 +47,32 @@ const AdminManagePerfumes = () => {
       setLoading(false);
     }
   };
+  const handleCreatePerfume = async (data: CreatePerfumeFormData) => {
+    try {
+      await perfumeAPI.createPerfume(data);
+      await fetchPerfumes(currentPage);
+    } catch (err) {
+      console.error("Failed to create perfume:", err);
+      throw error;
+    }
+  };
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {
       setCurrentPage(newPage);
     }
+  };
+  const handleDelete = async (id: string, perfumeName: string) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${perfumeName}"? This action cannot be undone.`,
+    );
+        if (!confirmed) return;
+try{
+  await perfumeAPI.deletePerfume(id)
+  await fetchPerfumes(currentPage)
+}catch(err){
+   console.error("Failed to delete perfume:", err);
+   alert("Failed to delete perfume. Please try again.");
+}
   };
   return (
     <div className="p-8 max-w-7xl mx-auto">
@@ -53,12 +86,7 @@ const AdminManagePerfumes = () => {
           </p>
         </div>
         <div>
-          <Button className="flex items-center gap-2 bg-orange-500 hover:bg-orange-800 text-white rounded-15 px-7 py-5 shadow-md">
-            <div className="bg-white/20 rounded-full p-1">
-              <Plus className="h-5 w-5" />
-            </div>
-            <span className="font-medium">Add Perfume</span>
-          </Button>
+          <CreatePerfumeDialog onSubmit={handleCreatePerfume} />
         </div>
       </div>
 
@@ -150,6 +178,7 @@ const AdminManagePerfumes = () => {
                                 variant="ghost"
                                 size="sm"
                                 className="hover:bg-red-50 hover:text-red-600"
+                                onClick={()=> perfume._id && handleDelete(perfume._id, perfume.perfumeName)}
                               >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
