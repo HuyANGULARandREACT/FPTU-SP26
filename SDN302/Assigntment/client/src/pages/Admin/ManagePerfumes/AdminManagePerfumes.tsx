@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardContent } from "../../components/ui/card";
+import { Card, CardContent } from "../../../components/ui/card";
 import { Edit, Plus, Trash2 } from "lucide-react";
-import { Button } from "../../components/ui/button";
-import { perfumeAPI, type IPerfume } from "../../services";
-import type { PaginatedResponse } from "../../services/brandAPI";
+import { Button } from "../../../components/ui/button";
+import { perfumeAPI, type IPerfume } from "../../../services";
+import type { PaginatedResponse } from "../../../services/brandAPI";
 
 const AdminManagePerfumes = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -64,7 +64,7 @@ const AdminManagePerfumes = () => {
 
       {/* Form Card */}
       <Card>
-        <CardContent className="p-8">
+        <CardContent className="p-0">
           {loading ? (
             <div className="p-8 text-center text-slate-500">
               Loading perfumes...

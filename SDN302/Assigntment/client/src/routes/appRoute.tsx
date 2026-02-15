@@ -9,10 +9,10 @@ import LoginPage from "../pages/Auth/LoginPage";
 import MemberDetail from "../pages/Detail/MemberDetail/MemberDetail";
 import EditInfo from "../pages/Detail/MemberDetail/EditInfo";
 import ChangePassword from "../pages/Detail/MemberDetail/ChangePassword";
-import AdminLayout from "../pages/Admin/AdminLayout";
-import AdminManage from "../pages/Admin/AdminManage";
-import AdminManagePerfumes from "../pages/Admin/AdminManagePerfumes";
-import AdminManageBrands from "../pages/Admin/AdminManageBrands";
+import AdminLayout from "../pages/Admin/AdminLayout/AdminLayout";
+import AdminManage from "../pages/Admin/AdminLayout/AdminManage";
+import AdminManagePerfumes from "../pages/Admin/ManagePerfumes/AdminManagePerfumes";
+import AdminManageBrands from "../pages/Admin/ManageBrands/AdminManageBrands";
 
 const AppRoute = () => {
   return (

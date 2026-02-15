@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "../../components/ui/card";
-import { Button } from "../../components/ui/button";
-import { Plus, Edit, Trash2 } from "lucide-react";
-import type { IBrand } from "../../services";
-import { brandAPI, type PaginatedResponse } from "../../services/brandAPI";
+import { Card, CardContent } from "../../../components/ui/card";
+import { Button } from "../../../components/ui/button";
+import {  Edit, Trash2 } from "lucide-react";
+import type { IBrand } from "../../../services";
+import { brandAPI, type PaginatedResponse } from "../../../services/brandAPI";
+import CreateBrandDialog from "./createBrandDialog";
 
 const AdminManageBrands = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,6 +37,15 @@ const AdminManageBrands = () => {
       setLoading(false);
     }
   };
+  const handelCreateBrand = async (data: { brandName: string }) => {
+    try {
+      await brandAPI.createBrand(data);
+      await fetchBrands(currentPage);
+    } catch (err) {
+      console.error("Failed to create brand:", err);
+      throw error; // Để dialog xử lý error
+    }
+  };
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {
       setCurrentPage(newPage);
@@ -54,12 +64,7 @@ const AdminManageBrands = () => {
           </p>
         </div>
         <div>
-          <Button className="flex items-center gap-2 bg-orange-500 hover:bg-orange-800 text-white rounded-15 px-7 py-5 shadow-md">
-            <div className="bg-white/20 rounded-full p-1">
-              <Plus className="h-5 w-5" />
-            </div>
-            <span className="font-medium">Add Brands</span>
-          </Button>
+          <CreateBrandDialog onSubmit={handelCreateBrand} />
         </div>
       </div>
 

@@ -10,6 +10,9 @@ export interface PaginatedResponse<T> {
     totalPages: number;
   };
 }
+interface createBrandDTO {
+  brandName: string;
+}
 export const brandAPI = {
   /**
    * Get all brands
@@ -28,6 +31,10 @@ export const brandAPI = {
         params: { page, pageSize },
       },
     );
+    return response.data;
+  },
+  createBrand: async (data: createBrandDTO): Promise<IBrand> => {
+    const response = await apiClient.post("/brand", data);
     return response.data;
   },
 };

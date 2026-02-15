@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { Navbar } from "../../components/layout/navbar";
+import { Navbar } from "../../../components/layout/navbar";
 import AdminSidebar from "./AdminSideBar";
 
 const AdminLayout = () => {
@@ -12,7 +12,6 @@ const AdminLayout = () => {
           <Outlet />
         </main>
       </div>
-    
     </div>
   );
 };
