@@ -8,6 +8,7 @@ import type {
   AuthUser,
   IMember,
 } from "../types/type";
+import type { PaginatedResponse } from "./brandAPI";
 
 // Helper function to decode JWT token
 const decodeJWT = (token: string): AuthUser | null => {
@@ -139,6 +140,18 @@ export const authAPI = {
     const response = await apiClient.put<{ success: boolean; message: string }>(
       `/member/password/change`,
       data,
+    );
+    return response.data;
+  },
+  getMembersWithPagination: async (
+    page: number = 1,
+    pageSize: number = 5,
+  ): Promise<PaginatedResponse<IMember>> => {
+    const response = await apiClient.get<PaginatedResponse<IMember>>(
+      "/member/members/withPagination",
+      {
+        params: { page, pageSize },
+      },
     );
     return response.data;
   },

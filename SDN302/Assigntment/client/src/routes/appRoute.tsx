@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router";
 import MainLayout from "../components/layout/MainLayout";
 import ProfileLayout from "../components/layout/ProfileLayout";
 import Home from "../pages/Home/home";
-import PerfumeDetail from "../pages/Detail/PerfumeDetail";
+import PerfumeDetail from "../pages/Detail/PerfumeDetail/PerfumeDetail";
 import RegisterPage from "../pages/Auth/RegisterPage";
 import LoginPage from "../pages/Auth/LoginPage";
 import MemberDetail from "../pages/Detail/MemberDetail/MemberDetail";

@@ -2,6 +2,7 @@
 export { authAPI } from "./authAPI";
 export { brandAPI } from "./brandAPI";
 export { perfumeAPI } from "./perfumeAPI";
+export { commentAPI } from "./commentAPI";
 
 // Re-export types for convenience
 export type {

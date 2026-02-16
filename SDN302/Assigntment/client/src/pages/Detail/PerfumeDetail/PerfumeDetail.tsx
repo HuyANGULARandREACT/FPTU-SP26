@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import type { IPerfume } from "../../types/type";
-import { perfumeAPI } from "../../services/perfumeAPI";
+import type { IPerfume } from "../../../types/type";
+import { perfumeAPI } from "../../../services/perfumeAPI";
+import ReviewSection from "./ReviewSection";
 
 const PerfumeDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -155,36 +156,7 @@ const PerfumeDetail = () => {
         </div>
 
         {/* Reviews Section */}
-        {/* {perfume.comments && perfume.comments.length > 0 && (
-          <div className="mt-20 py-12 border-t border-slate-200 dark:border-slate-700">
-            <h2 className="text-3xl font-black mb-8">Customer Reviews</h2>
-            <div className="grid gap-6">
-              {perfume.comments.map((comment) => (
-                <div
-                  key={comment._id}
-                  className="p-6 border border-slate-200 dark:border-slate-700 rounded-xl"
-                >
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <p className="font-bold">{comment.author?.membername || "Anonymous"}</p>
-                      <div className="flex gap-1 text-primary text-sm">
-                        {[...Array(comment.rating)].map((_, i) => (
-                          <span key={i}>★</span>
-                        ))}
-                      </div>
-                    </div>
-                    <span className="text-xs text-slate-500">
-                      {comment.createdAt
-                        ? new Date(comment.createdAt).toLocaleDateString()
-                        : "Recent"}
-                    </span>
-                  </div>
-                  <p className="text-slate-600 dark:text-slate-400">{comment.content}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )} */}
+        <ReviewSection perfume={perfume} />
       </main>
     </div>
   );

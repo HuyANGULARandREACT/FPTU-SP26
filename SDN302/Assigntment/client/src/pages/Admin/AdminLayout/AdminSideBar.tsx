@@ -6,17 +6,17 @@ const AdminSidebar = () => {
 
   const menuItems = [
     {
-      name: "Manage",
+      name: "Manage User",
       path: "/admin/manage",
       icon: Home,
     },
     {
-      name: "Brands",
+      name: "Manage Brands",
       path: "/admin/manage-brands",
       icon: Tag,
     },
     {
-      name: "Perfumes",
+      name: "Manage Perfumes",
       path: "/admin/manage-perfumes",
       icon: SprayCan,
     },
