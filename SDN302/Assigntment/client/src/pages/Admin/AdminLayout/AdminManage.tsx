@@ -43,9 +43,9 @@ const AdminManage = () => {
       <div className="mb-8 flex justify-between ">
         <div>
           {" "}
-          <h1 className="text-3xl font-bold mb-2">Brands Manage</h1>
+          <h1 className="text-3xl font-bold mb-2">Members Manage</h1>
           <p className="text-gray-500">
-            Update brands details and preferences.
+            Update Members details and preferences.
           </p>
         </div>
        
@@ -140,7 +140,7 @@ const AdminManage = () => {
                     pagination.page * pagination.pageSize,
                     pagination.total,
                   )}{" "}
-                  of {pagination.total} brands
+                  of {pagination.total} members
                 </p>
 
                 <div className="flex items-center gap-2">

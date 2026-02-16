@@ -52,6 +52,7 @@ const AdminManageBrands = () => {
     }
   };
   const handleDelete = async (id: string, brandName: string) => {
+   
     const confirmed = window.confirm(
       `Are you sure you want to delete "${brandName}"? This action cannot be undone.`,
     );
@@ -141,10 +142,6 @@ const AdminManageBrands = () => {
                                 variant="ghost"
                                 size="sm"
                                 className="hover:bg-blue-50 hover:text-blue-600"
-                                onClick={() =>
-                                  brand._id &&
-                                  handleDelete(brand._id, brand.brandName)
-                                }
                               >
                                 <Edit className="h-4 w-4" />
                               </Button>
@@ -152,6 +149,10 @@ const AdminManageBrands = () => {
                                 variant="ghost"
                                 size="sm"
                                 className="hover:bg-red-50 hover:text-red-600"
+                                onClick={() =>
+                                  brand._id &&
+                                  handleDelete(brand._id, brand.brandName)
+                                }
                               >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
