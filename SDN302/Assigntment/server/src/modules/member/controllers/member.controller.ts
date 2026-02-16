@@ -3,6 +3,8 @@ import { Member } from "../models/member.model";
 import bcrypt from "bcrypt";
 import generateToken from "../../../utils/generateToken";
 import * as memberService from "../services/member.service";
+import { PaginatedResponse } from "../../../types/pagination.type";
+import { IMember } from "../../../types/member.type";
 export const registerMember = async (
   req: Request,
   res: Response,
@@ -113,5 +115,35 @@ export const handleChangePassword = async (
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");
+  }
+};
+export const getMembersWithPagination = async (req: Request, res: Response) => {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+    const pageSize = parseInt(req.query.pageSize as string) || 5;
+    const membersData = await memberService.getAllMembers();
+    if (page < 1 || pageSize < 1) {
+      return res.status(400).json({
+        message: "page and pageSize must >0",
+      });
+    }
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    const paginatedData = membersData.slice(startIndex, endIndex);
+    const total = membersData.length;
+    const totalPages = Math.ceil(total / pageSize);
+    const response: PaginatedResponse<IMember> = {
+      data: paginatedData,
+      pagination: {
+        page,
+        pageSize,
+        total,
+        totalPages,
+      },
+    };
+    return res.status(200).json(response);
+  } catch (err) {
+    return res.status(500).json({ message: "Internal server error", err });
   }
 };

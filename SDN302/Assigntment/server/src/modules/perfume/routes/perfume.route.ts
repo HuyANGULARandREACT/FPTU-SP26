@@ -14,8 +14,8 @@ const perfumeRouter = express.Router();
 
 perfumeRouter.get("/", getAllPerfume);
 perfumeRouter.get("/:id", getPerfumeById);
-perfumeRouter.post("/", requireAdmin, createPerfume);
+perfumeRouter.post("/", createPerfume);
 perfumeRouter.put("/:id", requireAdmin, updatePerfume);
-perfumeRouter.delete("/:id", requireAdmin, deletePerfume);
+perfumeRouter.delete("/:id",  deletePerfume);
 perfumeRouter.get("/perfumes/withPagination", getPerfumesWithPagination);
 export default perfumeRouter;

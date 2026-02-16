@@ -10,9 +10,18 @@ export const commentSchema = new Schema<IComment>(
       ref: "Member",
       required: true,
     },
+    perfume: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Perfume",
+      required: true,
+    },
   },
   {
     timestamps: true,
   },
 );
+
+// Ensure one feedback per member per perfume
+commentSchema.index({ author: 1, perfume: 1 }, { unique: true });
+
 export const Comment = mongoose.model<IComment>("Comment", commentSchema);

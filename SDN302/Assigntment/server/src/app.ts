@@ -3,6 +3,7 @@ import cors from "cors";
 import perfumeRouter from "./modules/perfume/routes/perfume.route";
 import memberRouter from "./modules/member/routes/member.routes";
 import brandRouter from "./modules/brands/routes/brand.routes";
+import commentRouter from "./modules/comments/routes/comment.route";
 import connectDB from "./config/db";
 import config from "./config/config";
 
@@ -20,6 +21,7 @@ app.use(express.json());
 apiRouter.use("/perfume", perfumeRouter);
 apiRouter.use("/member", memberRouter);
 apiRouter.use("/brand", brandRouter);
+apiRouter.use("/comments", commentRouter);
 app.use("/api/v1", apiRouter);
 
 const PORT = config.PORT;
