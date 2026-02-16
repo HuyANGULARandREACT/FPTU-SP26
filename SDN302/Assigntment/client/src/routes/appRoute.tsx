@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Route, Routes } from "react-router";
 import MainLayout from "../components/layout/MainLayout";
 import ProfileLayout from "../components/layout/ProfileLayout";

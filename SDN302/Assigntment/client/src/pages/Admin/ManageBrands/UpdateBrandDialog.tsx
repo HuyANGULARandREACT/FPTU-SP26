@@ -15,16 +15,16 @@ import { Field, FieldGroup } from "../../../components/ui/field.tsx";
 import { Input } from "../../../components/ui/input.tsx";
 import { Label } from "../../../components/ui/label.tsx";
 import { Button } from "../../../components/ui/button.tsx";
-import { Plus } from "lucide-react";
+import { Edit } from "lucide-react";
+import type { IBrand } from "../../../types/type";
 
-interface CreateBrandFormData {
+interface UpdateBrandFormData {
   brandName: string;
 }
-
-interface CreateBrandDialogProps {
-  onSubmit: (data: CreateBrandFormData) => Promise<void>;
+interface UpdateBrandDialogProps {
+  brand: IBrand;
+  onSubmit: (data: UpdateBrandFormData) => Promise<void>;
 }
-
 // Validation Schema
 const brandValidationSchema = Yup.object({
   brandName: Yup.string()
@@ -36,15 +36,14 @@ const brandValidationSchema = Yup.object({
     )
     .required("Brand name is required"),
 });
-
-const CreateBrandDialog = ({ onSubmit }: CreateBrandDialogProps) => {
+const UpdateBrandDialog = ({ brand, onSubmit }: UpdateBrandDialogProps) => {
   const [open, setOpen] = useState(false);
   const [submitError, setSubmitError] = useState("");
-
   const formik = useFormik({
     initialValues: {
-      brandName: "",
+      brandName: brand.brandName || "",
     },
+    enableReinitialize: true,
     validationSchema: brandValidationSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       setSubmitError("");
@@ -61,7 +60,6 @@ const CreateBrandDialog = ({ onSubmit }: CreateBrandDialogProps) => {
       }
     },
   });
-
   const handleDialogChange = (isOpen: boolean) => {
     setOpen(isOpen);
     if (!isOpen) {
@@ -72,19 +70,20 @@ const CreateBrandDialog = ({ onSubmit }: CreateBrandDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={handleDialogChange}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-2 bg-orange-500 hover:bg-orange-800 text-white rounded-15 px-7 py-5 shadow-md">
-          <div className="bg-white/20 rounded-full p-1">
-            <Plus className="h-5 w-5" />
-          </div>
-          <span className="font-medium">Add Brands</span>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="hover:bg-blue-50 hover:text-blue-600"
+        >
+          <Edit className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <form onSubmit={formik.handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Create New Brand</DialogTitle>
+            <DialogTitle>Update Brand</DialogTitle>
             <DialogDescription>
-              Add a new brand to your catalog. Fill in the details below.
+              Update the brand information below.
             </DialogDescription>
           </DialogHeader>
 
@@ -135,7 +134,7 @@ const CreateBrandDialog = ({ onSubmit }: CreateBrandDialogProps) => {
               </Button>
             </DialogClose>
             <Button type="submit" disabled={formik.isSubmitting}>
-              {formik.isSubmitting ? "Creating..." : "Create Brand"}
+              {formik.isSubmitting ? "Updating..." : "Update Brand"}
             </Button>
           </DialogFooter>
         </form>
@@ -144,4 +143,4 @@ const CreateBrandDialog = ({ onSubmit }: CreateBrandDialogProps) => {
   );
 };
 
-export default CreateBrandDialog;
+export default UpdateBrandDialog;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Card, CardContent } from "../../../components/ui/card";
 import { Edit, Trash2 } from "lucide-react";
 import { Button } from "../../../components/ui/button";
@@ -39,7 +39,6 @@ const AdminManagePerfumes = () => {
         await perfumeAPI.getPerfumeWithPagination(page, pageSize);
       setPerfumes(response.data);
       setPagination(response.pagination);
-      console.log("perfume data", response.data);
     } catch (err) {
       setError("Failed to fetch perfumes");
       console.error(err);

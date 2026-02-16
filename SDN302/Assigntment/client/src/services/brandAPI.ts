@@ -13,6 +13,9 @@ export interface PaginatedResponse<T> {
 interface createBrandDTO {
   brandName: string;
 }
+interface updateBrandDTO {
+  brandName: string;
+}
 export const brandAPI = {
   /**
    * Get all brands
@@ -39,5 +42,9 @@ export const brandAPI = {
   },
   deleteBrand: async (id: string): Promise<void> => {
     await apiClient.delete(`/brand/${id}`);
+  },
+  updateBrand: async (id: string, data: updateBrandDTO): Promise<IBrand> => {
+    const response = await apiClient.put(`/brand/${id}`, data);
+    return response.data;
   },
 };

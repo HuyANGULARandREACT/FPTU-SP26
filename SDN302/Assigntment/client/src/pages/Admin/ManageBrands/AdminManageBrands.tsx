@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "../../../components/ui/card";
 import { Button } from "../../../components/ui/button";
-import { Edit, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import type { IBrand } from "../../../services";
 import { brandAPI, type PaginatedResponse } from "../../../services/brandAPI";
 import CreateBrandDialog from "./createBrandDialog";
+import UpdateBrandDialog from "./updateBrandDialog";
 
 const AdminManageBrands = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -52,7 +53,6 @@ const AdminManageBrands = () => {
     }
   };
   const handleDelete = async (id: string, brandName: string) => {
-   
     const confirmed = window.confirm(
       `Are you sure you want to delete "${brandName}"? This action cannot be undone.`,
     );
@@ -63,6 +63,15 @@ const AdminManageBrands = () => {
     } catch (err) {
       console.error("Failed to delete perfume:", err);
       alert("Failed to delete perfume. Please try again.");
+    }
+  };
+  const handleUpdateBrand = async (id: string, data: { brandName: string }) => {
+    try {
+      await brandAPI.updateBrand(id, data);
+      await fetchBrands(currentPage);
+    } catch (err) {
+      console.error("Failed to create brand:", err);
+      throw error;
     }
   };
   return (
@@ -138,13 +147,12 @@ const AdminManageBrands = () => {
                           {/* Actions */}
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-2">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="hover:bg-blue-50 hover:text-blue-600"
-                              >
-                                <Edit className="h-4 w-4" />
-                              </Button>
+                              <UpdateBrandDialog
+                                brand={brand}
+                                onSubmit={(data) =>
+                                  handleUpdateBrand(brand._id as string, data)
+                                }
+                              />
                               <Button
                                 variant="ghost"
                                 size="sm"
