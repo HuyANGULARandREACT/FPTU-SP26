@@ -6,7 +6,8 @@ const generateToken = (member: IMember) => {
   return jwt.sign(
     {
       memberId: member._id,
-      membername: member.membername,
+      memberFirstName: member.memberFirstName,
+      memberLastName: member.memberLastName,
       email: member.email,
       isAdmin: member.isAdmin,
     },

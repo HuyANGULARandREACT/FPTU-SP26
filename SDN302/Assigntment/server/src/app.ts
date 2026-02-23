@@ -6,6 +6,8 @@ import brandRouter from "./modules/brands/routes/brand.routes";
 import commentRouter from "./modules/comments/routes/comment.route";
 import connectDB from "./config/db";
 import config from "./config/config";
+import passport from "passport";
+import "./services/authService"; // Import to register passport strategies
 
 const app = express();
 const apiRouter = express.Router();
@@ -16,6 +18,7 @@ connectDB();
 //middleware
 app.use(cors());
 app.use(express.json());
+app.use(passport.initialize());
 
 //routes
 apiRouter.use("/perfume", perfumeRouter);

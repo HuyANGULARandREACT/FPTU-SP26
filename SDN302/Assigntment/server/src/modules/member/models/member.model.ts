@@ -2,7 +2,9 @@ import { IMember } from "../../../types/member.type";
 import mongoose, { Schema } from "mongoose";
 const memberSchema = new Schema<IMember>(
   {
-    membername: { type: String, required: true },
+    memberFirstName: { type: String, required: true },
+    memberLastName: { type: String, required: true },
+    googleId: { type: String, unique: true },
     password: { type: String, required: true },
     email: { type: String, required: true },
     YOB: { type: Date, required: true },

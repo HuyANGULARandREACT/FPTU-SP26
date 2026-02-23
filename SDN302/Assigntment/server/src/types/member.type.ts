@@ -2,7 +2,9 @@ import { Types } from "mongoose";
 
 export interface IMember {
   _id?: Types.ObjectId;
-  membername: string;
+  googleId: string;
+  memberFirstName: string;
+  memberLastName: string;
   email: string;
   YOB: Date;
   gender: Boolean;

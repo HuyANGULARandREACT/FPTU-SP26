@@ -10,5 +10,10 @@ memberRouter.get("/:id", memberController.getMemberById);
 memberRouter.put("/:id", memberController.updateMember);
 memberRouter.delete("/:id", requireAdmin, memberController.deleteMember);
 memberRouter.put("/password/change", memberController.handleChangePassword);
-memberRouter.get("/members/withPagination",memberController.getMembersWithPagination)
+memberRouter.get(
+  "/members/withPagination",
+  memberController.getMembersWithPagination,
+);
+memberRouter.get("/auth/google", memberController.googleAuth);
+memberRouter.get("/auth/google/callback", memberController.googleCallback);
 export default memberRouter;

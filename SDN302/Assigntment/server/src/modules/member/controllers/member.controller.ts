@@ -1,10 +1,13 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { Member } from "../models/member.model";
 import bcrypt from "bcrypt";
 import generateToken from "../../../utils/generateToken";
 import * as memberService from "../services/member.service";
 import { PaginatedResponse } from "../../../types/pagination.type";
 import { IMember } from "../../../types/member.type";
+import { comparePassword, hashPassword } from "../../../utils/hashPassword";
+import passport from "passport";
+import config from "../../../config/config";
 export const registerMember = async (
   req: Request,
   res: Response,
@@ -16,9 +19,9 @@ export const registerMember = async (
       return res.status(400).json({ message: "Email already exist" });
     }
     member = new Member({ membername, password, email, YOB, gender });
-    const salt = await bcrypt.genSalt(10);
-    member.password = await bcrypt.hash(password, salt);
-
+    // const salt = await bcrypt.genSalt(10);
+    // member.password = await bcrypt.hash(password, salt);
+    member.password = await hashPassword(member.password);
     await member.save();
     res.status(201).json({
       message: "Register successfully",
@@ -37,7 +40,8 @@ export const loginMember = async (
     if (!member) {
       return res.status(400).json({ message: "Email doesn't exist" });
     }
-    const isMatch = await bcrypt.compare(password, member.password);
+    // const isMatch = await bcrypt.compare(password, member.password);
+    const isMatch = await comparePassword(password, member.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid password" });
     }
@@ -50,6 +54,28 @@ export const loginMember = async (
   } catch (err: any) {
     res.status(500).send("Error at login");
   }
+};
+export const googleAuth = (req: Request, res: Response, next: NextFunction) => {
+  passport.authenticate("google", { scope: ["profile", "email"] })(req, res, next);
+};
+export const googleCallback = (req: Request, res: Response, next: NextFunction) => {
+  const frontendUrl = config.FRONTEND_URL;
+  passport.authenticate(
+    "google",
+    { failureRedirect: `${frontendUrl}/auth/login?error=auth_failed` },
+    (err: any, member: IMember) => {
+      if (err) {
+        console.error("Authentication error:", err);
+        return res.redirect(`${frontendUrl}/auth/login?error=auth_failed`);
+      }
+      if (member) {
+        const token = generateToken(member);
+        // Redirect to frontend with token
+        return res.redirect(`${frontendUrl}/auth/callback?token=${token}`);
+      }
+      return res.redirect(`${frontendUrl}/auth/login?error=no_user`);
+    },
+  )(req, res, next);
 };
 //Implement the login action, using OAuth2 is a plus.
 export const getAllMembers = async (req: Request, res: Response) => {
