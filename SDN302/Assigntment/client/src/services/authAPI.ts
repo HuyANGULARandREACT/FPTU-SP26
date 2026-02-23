@@ -27,7 +27,8 @@ const decodeJWT = (token: string): AuthUser | null => {
       _id: decoded.memberId || decoded.id || decoded._id || "",
       email: decoded.email || "",
       isAdmin: decoded.isAdmin || false,
-      membername: decoded.membername || decoded.name || "",
+      memberFirstName: decoded.memberFirstName || decoded.firstName || "User",
+      memberLastName: decoded.memberLastName || decoded.lastName || "",
     };
   } catch (error) {
     console.error("Error decoding JWT:", error);

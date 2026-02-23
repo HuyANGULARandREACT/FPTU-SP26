@@ -47,4 +47,5 @@ export const brandAPI = {
     const response = await apiClient.put(`/brand/${id}`, data);
     return response.data;
   },
+  
 };

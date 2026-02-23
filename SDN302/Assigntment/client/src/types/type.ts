@@ -1,11 +1,13 @@
 export interface IMember {
   _id: string;
-  membername: string;
+  memberFirstName: string;
+  memberLastName: string;
   email: string;
   YOB: Date;
   gender: boolean;
   password: string;
   isAdmin: boolean;
+  googleId?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -13,7 +15,7 @@ export interface IMember {
 // Auth-specific user type (lightweight version for authentication)
 export type AuthUser = Pick<
   IMember,
-  "_id" | "membername" | "email" | "isAdmin"
+  "_id" | "memberFirstName" | "memberLastName" | "email" | "isAdmin"
 >;
 
 export interface ILoginRequest {
@@ -22,7 +24,8 @@ export interface ILoginRequest {
 }
 
 export interface IRegisterRequest {
-  membername: string;
+  memberFirstName: string;
+  memberLastName: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -31,7 +34,8 @@ export interface IRegisterRequest {
 }
 
 export interface IUpdateMemberRequest {
-  membername: string;
+  memberFirstName: string;
+  memberLastName: string;
   YOB: Date;
   gender: boolean;
 }
@@ -52,6 +56,7 @@ export interface AuthContextType {
   user: AuthUser | null;
   isLoggedIn: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginWithToken: (token: string) => Promise<void>;
   register: (data: IRegisterRequest) => Promise<void>;
   logout: () => void;
   checkAuth: () => boolean;

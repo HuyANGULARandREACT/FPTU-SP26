@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -7,9 +7,12 @@ import { FcGoogle } from "react-icons/fc";
 import { GrApple } from "react-icons/gr";
 // Validation Schema
 const registerValidationSchema = Yup.object({
-  membername: Yup.string()
-    .min(3, "Name must be at least 3 characters")
-    .required("Name is required"),
+  memberFirstName: Yup.string()
+    .min(2, "First name must be at least 2 characters")
+    .required("First name is required"),
+  memberLastName: Yup.string()
+    .min(2, "Last name must be at least 2 characters")
+    .required("Last name is required"),
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
@@ -30,9 +33,14 @@ const RegisterPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
+  const handleGoogleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_BASE_URL}/member/auth/google`;
+  };
+
   const formik = useFormik({
     initialValues: {
-      membername: "",
+      memberFirstName: "",
+      memberLastName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -144,27 +152,50 @@ const RegisterPage = () => {
 
           {/* Register Form */}
           <form onSubmit={formik.handleSubmit} className="space-y-4">
-            {/* Name */}
-            <div>
-              <label className="block text-sm font-bold mb-2">Full Name</label>
-              <input
-                type="text"
-                name="membername"
-                value={formik.values.membername}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                placeholder="John Doe"
-                className={`w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border ${
-                  getFieldError("membername")
-                    ? "border-red-500"
-                    : "border-slate-200 dark:border-slate-700"
-                } rounded-lg focus:outline-none focus:border-primary transition-colors`}
-              />
-              {getFieldError("membername") && (
-                <p className="text-red-500 text-xs mt-1">
-                  {getFieldError("membername") as string}
-                </p>
-              )}
+            {/* Name Fields */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-bold mb-2">First Name</label>
+                <input
+                  type="text"
+                  name="memberFirstName"
+                  value={formik.values.memberFirstName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  placeholder="John"
+                  className={`w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border ${
+                    getFieldError("memberFirstName")
+                      ? "border-red-500"
+                      : "border-slate-200 dark:border-slate-700"
+                  } rounded-lg focus:outline-none focus:border-primary transition-colors`}
+                />
+                {getFieldError("memberFirstName") && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {getFieldError("memberFirstName") as string}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-bold mb-2">Last Name</label>
+                <input
+                  type="text"
+                  name="memberLastName"
+                  value={formik.values.memberLastName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  placeholder="Doe"
+                  className={`w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border ${
+                    getFieldError("memberLastName")
+                      ? "border-red-500"
+                      : "border-slate-200 dark:border-slate-700"
+                  } rounded-lg focus:outline-none focus:border-primary transition-colors`}
+                />
+                {getFieldError("memberLastName") && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {getFieldError("memberLastName") as string}
+                  </p>
+                )}
+              </div>
             </div>
 
             {/* Email */}
@@ -326,11 +357,19 @@ const RegisterPage = () => {
 
           {/* Social Register */}
           <div className="grid grid-cols-2 gap-4">
-            <button className="flex items-center justify-center gap-2 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-semibold">
+            <button 
+              type="button"
+              onClick={handleGoogleLogin}
+              className="flex items-center justify-center gap-2 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-semibold"
+            >
               <FcGoogle />
               Google
             </button>
-            <button className="flex items-center justify-center gap-2 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-semibold">
+            <button 
+              type="button"
+              disabled
+              className="flex items-center justify-center gap-2 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-semibold opacity-50 cursor-not-allowed"
+            >
               <GrApple />
               Apple
             </button>

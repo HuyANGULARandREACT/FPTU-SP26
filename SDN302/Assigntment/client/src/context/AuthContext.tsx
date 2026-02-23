@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useCallback } from "react";
 import type { ReactNode } from "react";
 import { authAPI } from "../services/authAPI";
 import type {
@@ -67,6 +67,37 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  const loginWithToken = useCallback(async (token: string): Promise<void> => {
+    try {
+      // Decode JWT to get user info
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+          .join(""),
+      );
+      const decoded = JSON.parse(jsonPayload);
+
+      const user: AuthUser = {
+        _id: decoded.memberId || decoded.id || decoded._id || "",
+        email: decoded.email || "",
+        isAdmin: decoded.isAdmin || false,
+        memberFirstName: decoded.memberFirstName || decoded.firstName || "User",
+        memberLastName: decoded.memberLastName || decoded.lastName || "",
+      };
+
+      setUser(user);
+      setIsLoggedIn(true);
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("user", JSON.stringify(user));
+    } catch (error) {
+      console.error("Login with token failed:", error);
+      throw error;
+    }
+  }, []);
+
   const logout = (): void => {
     setUser(null);
     setIsLoggedIn(false);
@@ -78,6 +109,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     user,
     isLoggedIn,
     login,
+    loginWithToken,
     register,
     logout,
     checkAuth,

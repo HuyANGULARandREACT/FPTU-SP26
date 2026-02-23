@@ -9,10 +9,14 @@ import { Button } from "../../../components/ui/button";
 
 // Validation Schema
 const editInfoValidationSchema = Yup.object({
-  membername: Yup.string()
-    .min(2, "Name must be at least 2 characters")
-    .max(50, "Name must not exceed 50 characters")
-    .required("Full name is required"),
+  memberFirstName: Yup.string()
+    .min(2, "First name must be at least 2 characters")
+    .max(50, "First name must not exceed 50 characters")
+    .required("First name is required"),
+  memberLastName: Yup.string()
+    .min(2, "Last name must be at least 2 characters")
+    .max(50, "Last name must not exceed 50 characters")
+    .required("Last name is required"),
   YOB: Yup.date()
     .max(new Date(), "Date of birth cannot be in the future")
     .min(new Date(1900, 0, 1), "Date of birth must be after 1900")
@@ -27,7 +31,8 @@ const EditInfo = () => {
 
   const formik = useFormik({
     initialValues: {
-      membername: "",
+      memberFirstName: "",
+      memberLastName: "",
       YOB: new Date(),
       gender: true,
     },
@@ -48,7 +53,8 @@ const EditInfo = () => {
   useEffect(() => {
     if (member) {
       formik.setValues({
-        membername: member.membername,
+        memberFirstName: member.memberFirstName,
+        memberLastName: member.memberLastName,
         YOB: new Date(member.YOB),
         gender: member.gender,
       });
@@ -92,29 +98,56 @@ const EditInfo = () => {
         <CardContent className="p-8">
           <form onSubmit={formik.handleSubmit}>
             <div className="grid grid-cols-2 gap-6 mb-8">
-              {/* Full Name */}
+              {/* First Name */}
               <div className="space-y-2">
                 <Label
-                  htmlFor="membername"
+                  htmlFor="memberFirstName"
                   className="text-xs font-semibold text-gray-600 uppercase"
                 >
-                  Full Name
+                  First Name
                 </Label>
                 <Input
-                  id="membername"
-                  name="membername"
-                  value={formik.values.membername}
+                  id="memberFirstName"
+                  name="memberFirstName"
+                  value={formik.values.memberFirstName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   className={`bg-gray-50 ${
-                    getFieldError("membername")
+                    getFieldError("memberFirstName")
                       ? "border-red-500 focus-visible:ring-red-500"
                       : ""
                   }`}
                 />
-                {getFieldError("membername") && (
+                {getFieldError("memberFirstName") && (
                   <p className="text-xs text-red-500">
-                    {getFieldError("membername")}
+                    {getFieldError("memberFirstName")}
+                  </p>
+                )}
+              </div>
+
+              {/* Last Name */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="memberLastName"
+                  className="text-xs font-semibold text-gray-600 uppercase"
+                >
+                  Last Name
+                </Label>
+                <Input
+                  id="memberLastName"
+                  name="memberLastName"
+                  value={formik.values.memberLastName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className={`bg-gray-50 ${
+                    getFieldError("memberLastName")
+                      ? "border-red-500 focus-visible:ring-red-500"
+                      : ""
+                  }`}
+                />
+                {getFieldError("memberLastName") && (
+                  <p className="text-xs text-red-500">
+                    {getFieldError("memberLastName")}
                   </p>
                 )}
               </div>

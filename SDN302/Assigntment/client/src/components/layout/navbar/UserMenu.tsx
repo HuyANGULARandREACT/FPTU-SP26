@@ -40,6 +40,9 @@ export const UserMenu = () => {
 
   // Select menu items based on user role
   const menuItems = user.isAdmin ? menuItemsForAdmin : menuItemsForMember;
+  const fullName = `${user.memberFirstName} ${user.memberLastName}`;
+  const initials =
+    `${user.memberFirstName.charAt(0)}${user.memberLastName.charAt(0)}`.toUpperCase();
 
   return (
     <DropdownMenu>
@@ -48,11 +51,11 @@ export const UserMenu = () => {
           variant="ghost"
           className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-15 px-4 py-2"
         >
-          <span className="font-medium">{user.membername}</span>
+          <span className="font-medium">{fullName}</span>
           <Avatar className="h-8 w-8">
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback className="bg-gray-300 text-gray-700">
-              {user.membername.charAt(0).toUpperCase()}
+              {initials}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -60,9 +63,7 @@ export const UserMenu = () => {
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">
-              {user.membername}
-            </p>
+            <p className="text-sm font-medium leading-none">{fullName}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

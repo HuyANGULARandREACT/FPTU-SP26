@@ -70,7 +70,7 @@ const AdminManageBrands = () => {
       await brandAPI.updateBrand(id, data);
       await fetchBrands(currentPage);
     } catch (err) {
-      console.error("Failed to create brand:", err);
+      console.error("Failed to update brand:", err);
       throw error;
     }
   };
@@ -117,6 +117,9 @@ const AdminManageBrands = () => {
                         Creation Date
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        Updated Date
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
@@ -140,6 +143,13 @@ const AdminManageBrands = () => {
                             <p className="text-gray-700">
                               {brand.createdAt
                                 ? new Date(brand.createdAt).toLocaleDateString()
+                                : "N/A"}
+                            </p>
+                          </td>
+                          <td className="px-6 py-4">
+                            <p className="text-gray-700">
+                              {brand.updatedAt
+                                ? new Date(brand.updatedAt).toLocaleDateString()
                                 : "N/A"}
                             </p>
                           </td>

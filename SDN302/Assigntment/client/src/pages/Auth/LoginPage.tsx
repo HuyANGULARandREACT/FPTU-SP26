@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -33,6 +33,10 @@ const LoginPage = () => {
       window.history.replaceState({}, document.title);
     }
   }, [location]);
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_BASE_URL}/member/auth/google`;
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -250,11 +254,19 @@ const LoginPage = () => {
 
           {/* Social Login */}
           <div className="grid grid-cols-2 gap-4">
-            <button className="flex items-center justify-center gap-2 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-semibold">
+            <button 
+              type="button"
+              onClick={handleGoogleLogin}
+              className="flex items-center justify-center gap-2 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-semibold"
+            >
               <FcGoogle />
               Google
             </button>
-            <button className="flex items-center justify-center gap-2 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-semibold">
+            <button 
+              type="button"
+              disabled
+              className="flex items-center justify-center gap-2 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-semibold opacity-50 cursor-not-allowed"
+            >
               <GrApple />
               Apple
             </button>

@@ -1,11 +1,23 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "../../../components/ui/card";
-import { Edit, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { perfumeAPI, type IPerfume } from "../../../services";
 import type { PaginatedResponse } from "../../../services/brandAPI";
 import CreatePerfumeDialog from "./CreatePerfumeDialog";
+import UpdatePerfumeDialog from "./UpdatePerfumeDialog";
 interface CreatePerfumeFormData {
+  perfumeName: string;
+  uri: string;
+  price: number;
+  concentration: string;
+  description: string;
+  ingredients: string;
+  volume: number;
+  targetAudience: string;
+  brand: string;
+}
+interface UpdatePerfumeFormData {
   perfumeName: string;
   uri: string;
   price: number;
@@ -64,14 +76,26 @@ const AdminManagePerfumes = () => {
     const confirmed = window.confirm(
       `Are you sure you want to delete "${perfumeName}"? This action cannot be undone.`,
     );
-        if (!confirmed) return;
-try{
-  await perfumeAPI.deletePerfume(id)
-  await fetchPerfumes(currentPage)
-}catch(err){
-   console.error("Failed to delete perfume:", err);
-   alert("Failed to delete perfume. Please try again.");
-}
+    if (!confirmed) return;
+    try {
+      await perfumeAPI.deletePerfume(id);
+      await fetchPerfumes(currentPage);
+    } catch (err) {
+      console.error("Failed to delete perfume:", err);
+      alert("Failed to delete perfume. Please try again.");
+    }
+  };
+  const handleUpdatePerfume = async (
+    id: string,
+    data: UpdatePerfumeFormData,
+  ) => {
+    try {
+      await perfumeAPI.updatePerfume(id, data);
+      await fetchPerfumes(currentPage);
+    } catch (err) {
+      console.error("Failed to update perfume:", err);
+      throw error;
+    }
   };
   return (
     <div className="p-8 max-w-7xl mx-auto">
@@ -166,18 +190,23 @@ try{
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-2">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="hover:bg-blue-50 hover:text-blue-600"
-                              >
-                                <Edit className="h-4 w-4" />
-                              </Button>
+                              <UpdatePerfumeDialog
+                                perfume={perfume}
+                                onSubmit={(data) =>
+                                  handleUpdatePerfume(
+                                    perfume._id as string,
+                                    data,
+                                  )
+                                }
+                              />
                               <Button
                                 variant="ghost"
                                 size="sm"
                                 className="hover:bg-red-50 hover:text-red-600"
-                                onClick={()=> perfume._id && handleDelete(perfume._id, perfume.perfumeName)}
+                                onClick={() =>
+                                  perfume._id &&
+                                  handleDelete(perfume._id, perfume.perfumeName)
+                                }
                               >
                                 <Trash2 className="h-4 w-4" />
                               </Button>

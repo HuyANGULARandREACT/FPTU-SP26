@@ -6,6 +6,7 @@ import Home from "../pages/Home/home";
 import PerfumeDetail from "../pages/Detail/PerfumeDetail/PerfumeDetail";
 import RegisterPage from "../pages/Auth/RegisterPage";
 import LoginPage from "../pages/Auth/LoginPage";
+import OAuthCallback from "../pages/Auth/OAuthCallback";
 import MemberDetail from "../pages/Detail/MemberDetail/MemberDetail";
 import EditInfo from "../pages/Detail/MemberDetail/EditInfo";
 import ChangePassword from "../pages/Detail/MemberDetail/ChangePassword";
@@ -20,6 +21,7 @@ const AppRoute = () => {
       <Route path="/auth">
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
+        <Route path="callback" element={<OAuthCallback />} />
       </Route>
       <Route element={<MainLayout />}>
         <Route index element={<Home />} />

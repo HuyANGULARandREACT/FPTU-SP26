@@ -29,7 +29,7 @@ const MemberDetail = () => {
     );
   }
 
-  const initials = member.membername
+  const initials = `${member.memberFirstName} ${member.memberLastName}`
     .split(" ")
     .map((n) => n[0])
     .join("")
@@ -52,7 +52,7 @@ const MemberDetail = () => {
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-4xl font-bold text-white">
-                {member.membername}
+                {member.memberFirstName} {member.memberLastName}
               </h1>
             </div>
             <div className="flex items-center gap-2 text-white">

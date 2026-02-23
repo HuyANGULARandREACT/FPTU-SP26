@@ -12,6 +12,17 @@ interface createPerfumeDTO {
   targetAudience: string;
   brand: string;
 }
+interface updatePerfumeDTO {
+  perfumeName: string;
+  uri: string;
+  price: number;
+  concentration: string;
+  description: string;
+  ingredients: string;
+  volume: number;
+  targetAudience: string;
+  brand: string;
+}
 export const perfumeAPI = {
   /**
    * Get all perfumes
@@ -46,5 +57,12 @@ export const perfumeAPI = {
   },
   deletePerfume: async (id: string): Promise<void> => {
     await apiClient.delete(`/perfume/${id}`);
+  },
+  updatePerfume: async (
+    id: string,
+    data: updatePerfumeDTO,
+  ): Promise<IPerfume> => {
+    const response = await apiClient.put(`perfume/${id}`, data);
+    return response.data;
   },
 };

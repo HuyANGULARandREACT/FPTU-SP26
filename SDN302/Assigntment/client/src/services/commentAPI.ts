@@ -25,9 +25,7 @@ export interface CheckFeedbackResponse {
 }
 
 export const commentAPI = {
-  /**
-   * Get all comments for a specific perfume
-   */
+  
   getCommentsByPerfume: async (perfumeId: string): Promise<IComment[]> => {
     const response = await apiClient.get<CommentsResponse>(
       `/comments/perfume/${perfumeId}`,
@@ -35,17 +33,12 @@ export const commentAPI = {
     return response.data.data;
   },
 
-  /**
-   * Create a new comment/feedback
-   */
+  
   createComment: async (data: CreateCommentDTO): Promise<IComment> => {
     const response = await apiClient.post<CommentResponse>("/comments", data);
     return response.data.data;
   },
 
-  /**
-   * Check if member has already commented on a perfume
-   */
   checkMemberFeedback: async (perfumeId: string): Promise<boolean> => {
     const response = await apiClient.get<CheckFeedbackResponse>(
       `/comments/check/${perfumeId}`,
@@ -53,9 +46,7 @@ export const commentAPI = {
     return response.data.hasCommented;
   },
 
-  /**
-   * Get all comments (admin)
-   */
+ 
   getAllComments: async (): Promise<IComment[]> => {
     const response = await apiClient.get<CommentsResponse>("/comments");
     return response.data.data;

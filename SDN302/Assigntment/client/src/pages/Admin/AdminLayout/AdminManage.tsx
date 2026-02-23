@@ -97,7 +97,7 @@ const AdminManage = () => {
                         >
                           <td className="px-6 py-4">
                             <p className="font-semibold text-gray-900">
-                              {member.membername}
+                              {member.memberFirstName} {member.memberLastName}
                             </p>
                           </td>
                           <td className="px-6 py-4">

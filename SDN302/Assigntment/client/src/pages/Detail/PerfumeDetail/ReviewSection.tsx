@@ -186,7 +186,9 @@ const ReviewSection = ({ perfume }: ReviewSectionProps) => {
                   <div className="flex items-start gap-4">
                     {/* Avatar */}
                     <div className="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center font-bold text-sm">
-                      {getInitials(comment.author?.membername || "Anonymous")}
+                      {getInitials(comment.author?.memberFirstName && comment.author?.memberLastName 
+                        ? `${comment.author.memberFirstName} ${comment.author.memberLastName}`
+                        : "Anonymous")}
                     </div>
 
                     {/* Content */}
@@ -194,8 +196,9 @@ const ReviewSection = ({ perfume }: ReviewSectionProps) => {
                       <div className="flex items-start justify-between mb-2">
                         <div>
                           <p className="font-bold uppercase text-sm">
-                            {comment.author?.membername ||
-                              "Anonymous Collector"}
+                            {comment.author?.memberFirstName && comment.author?.memberLastName
+                              ? `${comment.author.memberFirstName} ${comment.author.memberLastName}`
+                              : "Anonymous Collector"}
                           </p>
                           <p className="text-xs text-slate-500 uppercase tracking-wider">
                             Member • {comment.createdAt?.toString() || "N/A"}
