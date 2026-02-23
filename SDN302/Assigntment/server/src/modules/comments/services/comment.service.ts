@@ -5,7 +5,7 @@ import { Perfume } from "../../perfume/models/perfume.model";
 
 export const getAllComments = async (): Promise<IComment[]> => {
   return await Comment.find()
-    .populate("author", "membername email")
+    .populate("author", "memberFirstName memberLastName email")
     .populate("perfume", "perfumeName");
 };
 
@@ -13,7 +13,7 @@ export const getCommentsByPerfume = async (
   perfumeId: string,
 ): Promise<IComment[]> => {
   return await Comment.find({ perfume: perfumeId })
-    .populate("author", "membername email")
+    .populate("author", "memberFirstName memberLastName email")
     .sort({ createdAt: -1 });
 };
 
@@ -39,8 +39,6 @@ export const createComment = async (
     throw new Error("You have already provided feedback for this perfume");
   }
 
- 
-
   // Create comment
   const newComment = new Comment({
     rating,
@@ -57,7 +55,7 @@ export const createComment = async (
 
   // Return populated comment
   return (await Comment.findById(savedComment._id)
-    .populate("author", "membername email")
+    .populate("author", "memberFirstName memberLastName email")
     .populate("perfume", "perfumeName")) as IComment;
 };
 

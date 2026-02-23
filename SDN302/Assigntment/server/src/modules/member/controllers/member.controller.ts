@@ -12,13 +12,21 @@ export const registerMember = async (
   req: Request,
   res: Response,
 ): Promise<any> => {
-  const { membername, password, email, YOB, gender } = req.body;
+  const { memberFirstName, memberLastName, password, email, YOB, gender } =
+    req.body;
   try {
     let member = await Member.findOne({ email });
     if (member) {
       return res.status(400).json({ message: "Email already exist" });
     }
-    member = new Member({ membername, password, email, YOB, gender });
+    member = new Member({
+      memberFirstName,
+      memberLastName,
+      password,
+      email,
+      YOB,
+      gender,
+    });
     // const salt = await bcrypt.genSalt(10);
     // member.password = await bcrypt.hash(password, salt);
     member.password = await hashPassword(member.password);
@@ -56,9 +64,17 @@ export const loginMember = async (
   }
 };
 export const googleAuth = (req: Request, res: Response, next: NextFunction) => {
-  passport.authenticate("google", { scope: ["profile", "email"] })(req, res, next);
+  passport.authenticate("google", { scope: ["profile", "email"] })(
+    req,
+    res,
+    next,
+  );
 };
-export const googleCallback = (req: Request, res: Response, next: NextFunction) => {
+export const googleCallback = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const frontendUrl = config.FRONTEND_URL;
   passport.authenticate(
     "google",
