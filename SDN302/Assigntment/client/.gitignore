@@ -23,3 +23,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.DS_Store
+**/.DS_Store
+.DS_Store
+**/.DS_Store
+
+# local school folders
+EXE101/
+MMA301/
+Project/
