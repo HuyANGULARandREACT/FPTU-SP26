@@ -8,4 +8,11 @@ export interface IHandbag {
   uri: string;
   brand: string;
   percentOff: number;
+  feedbacks: IFeedbacks[];
 }
+export interface IFeedbacks {
+  id: string;
+  rating: number;
+  content: string;
+}
+export type FavoritesList = IHandbag[];

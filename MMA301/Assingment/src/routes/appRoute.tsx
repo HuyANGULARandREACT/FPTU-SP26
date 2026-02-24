@@ -3,7 +3,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { RootTabParamList } from "../types/app.type";
 import HomeStack from "./homeStack";
-import FavoriteSreen from "../screens/Favorite/favoriteSreen";
+import FavoriteStack from "./favoriteStack";
 import AboutSreen from "../screens/About/aboutSreen";
 import { Ionicons } from "@expo/vector-icons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -44,7 +44,13 @@ const AppRoute = () => {
             tabBarLabel: "Home",
           }}
         />
-        <Tab.Screen name="Favorite" component={FavoriteSreen} />
+        <Tab.Screen
+          name="Favorite"
+          component={FavoriteStack}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Tab.Screen name="About" component={AboutSreen} />
       </Tab.Navigator>
     </NavigationContainer>

@@ -1,29 +1,67 @@
 import React from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { IHandbag } from "../../types/handBag.type";
+import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
+import { FavoritesList, IHandbag } from "../../types/handBag.type";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { HomeStackParamList } from "../../types/app.type";
+import { favoriteService } from "../../services/favoriteService";
+import HandbagCard from "../../components/HandbagCard";
+
+type NavigationProp = NativeStackNavigationProp<HomeStackParamList>;
 
 interface HandbagGridProps {
   handbags: IHandbag[];
+  favorites: FavoritesList;
   loading: boolean;
   error: string | null;
+  onFavoriteToggle: () => Promise<void>;
 }
 
-const HandbagGrid = ({ handbags, loading, error }: HandbagGridProps) => {
+const HandbagGrid = ({
+  handbags,
+  favorites,
+  loading,
+  error,
+  onFavoriteToggle,
+}: HandbagGridProps) => {
+  const navigation = useNavigation<NavigationProp>();
+
+  // const toggleFavorite = (id: string) => {
+  //   setFavorites((prev) =>
+  //     prev.includes(id) ? prev.filter((fav) => fav !== id) : [...prev, id],
+  //   );
+  // };
+  const handleToggleFavorite = async (handbags: IHandbag): Promise<void> => {
+    try {
+      const result = await favoriteService.toogleFavorite(handbags);
+      await onFavoriteToggle(); // Refresh favorites to update UI
+      Alert.alert(
+        "Success",
+        result.action === "added"
+          ? "Added to favorites ❤️"
+          : "Removed from favorites",
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert("Error", error.message);
+      }
+    }
+  };
+  const handleProductPress = (handbagId: string) => {
+    navigation.navigate("Detail", { handbagId });
+  };
+  const checkIsFavorite = (id: string): boolean => {
+    return favorites.some((fav) => fav.id === id);
+  };
   if (loading)
     return (
-      <View>
+      <View style={styles.centerContainer}>
         <Text>Loading...</Text>
       </View>
     );
   if (error)
     return (
-      <View>
+      <View style={styles.centerContainer}>
         <Text>Error: {error}</Text>
       </View>
     );
@@ -35,38 +73,37 @@ const HandbagGrid = ({ handbags, loading, error }: HandbagGridProps) => {
         numColumns={2}
         columnWrapperStyle={styles.row}
         renderItem={({ item }) => {
+          const isFavorite = checkIsFavorite(item.id);
+
           return (
-            <TouchableOpacity style={styles.cardHandBag}>
-              <View>
-                <Text>{item.handbagName}</Text>
-                <Text>${item.cost}</Text>
-              </View>
-            </TouchableOpacity>
+            <HandbagCard
+              item={item}
+              isFavorite={isFavorite}
+              onPress={() => handleProductPress(item.id)}
+              onFavoritePress={() => handleToggleFavorite(item)}
+            />
           );
         }}
       />
     </View>
   );
 };
+
 const styles = StyleSheet.create({
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   allHandBags: {
-    borderWidth: 1,
     flex: 5,
-    borderColor: "black",
     padding: 5,
   },
   row: {
     justifyContent: "space-between",
     paddingHorizontal: 5,
-    marginBottom: 10,
-  },
-  cardHandBag: {
-    borderWidth: 1,
-    width: "48%",
-    padding: 10,
-    borderRadius: 8,
-    borderColor: "#ddd",
-    backgroundColor: "#fff",
+    marginBottom: 15,
   },
 });
+
 export default HandbagGrid;

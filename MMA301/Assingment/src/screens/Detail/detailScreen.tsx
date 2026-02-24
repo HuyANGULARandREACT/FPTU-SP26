@@ -12,6 +12,7 @@ import { HomeStackParamList } from "../../types/app.type";
 import { handbagAPI } from "../../services/handbagAPI";
 import { IHandbag } from "../../types/handBag.type";
 import { Ionicons } from "@expo/vector-icons";
+import Feedback from "./feedback";
 
 type Props = NativeStackScreenProps<HomeStackParamList, "Detail">;
 
@@ -118,6 +119,9 @@ const DetailScreen = ({ route }: Props) => {
           </View>
         </View>
       </View>
+
+      {/* Feedback Section */}
+      <Feedback feedbacks={handbag.feedbacks} />
     </ScrollView>
   );
 };
