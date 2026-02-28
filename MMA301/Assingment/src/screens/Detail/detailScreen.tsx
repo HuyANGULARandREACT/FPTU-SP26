@@ -6,13 +6,16 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
+  Alert,
+  TouchableOpacity,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { HomeStackParamList } from "../../types/app.type";
 import { handbagAPI } from "../../services/handbagAPI";
-import { IHandbag } from "../../types/handBag.type";
+import { FavoritesList, IHandbag } from "../../types/handBag.type";
 import { Ionicons } from "@expo/vector-icons";
 import Feedback from "./feedback";
+import { favoriteService } from "../../services/favoriteService";
 
 type Props = NativeStackScreenProps<HomeStackParamList, "Detail">;
 
@@ -21,6 +24,7 @@ const DetailScreen = ({ route }: Props) => {
   const [handbag, setHandbag] = useState<IHandbag | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     const fetchHandbagDetail = async () => {
@@ -28,6 +32,10 @@ const DetailScreen = ({ route }: Props) => {
         setLoading(true);
         const data = await handbagAPI.getHandbagById(handbagId);
         setHandbag(data);
+
+        // Check if this handbag is in favorites
+        const favoriteStatus = await favoriteService.isFavorite(handbagId);
+        setIsFavorite(favoriteStatus);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -37,6 +45,23 @@ const DetailScreen = ({ route }: Props) => {
     fetchHandbagDetail();
   }, [handbagId]);
 
+  const handleToggleFavorite = async () => {
+    if (!handbag) return;
+
+    try {
+      const result = await favoriteService.toogleFavorite(handbag);
+      setIsFavorite(result.action === "added");
+
+      Alert.alert(
+        "Thành công",
+        result.action === "added"
+          ? "Đã thêm vào yêu thích"
+          : "Đã xóa khỏi yêu thích",
+      );
+    } catch (error) {
+      Alert.alert("Lỗi", "Không thể cập nhật yêu thích");
+    }
+  };
   if (loading) {
     return (
       <View style={styles.centerContainer}>
@@ -70,6 +95,18 @@ const DetailScreen = ({ route }: Props) => {
             <Text style={styles.discountText}>{discountPercent}% OFF</Text>
           </View>
         )}
+
+        {/* Favorite Button */}
+        <TouchableOpacity
+          style={styles.favoriteButton}
+          onPress={handleToggleFavorite}
+        >
+          <Ionicons
+            name={isFavorite ? "heart" : "heart-outline"}
+            size={28}
+            color={isFavorite ? "#FF4444" : "#000"}
+          />
+        </TouchableOpacity>
       </View>
 
       {/* Product Info */}
@@ -173,6 +210,22 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 14,
     fontWeight: "bold",
+  },
+  favoriteButton: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    backgroundColor: "white",
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   infoContainer: {
     backgroundColor: "#FFF",
